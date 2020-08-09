@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Koelkast</title>
+</head>
+<body>
+Status: Actief
+
+<input type="button" {% if active == 0 %} onclick="window.location.href='/start';" class="btn btn-success" value="Start"/>{% else %} onclick="window.location.href='/stop';" class="btn btn-danger" value="Stop"/>{% endif %}
+Temperatuur: {{ current_temp }} Graden
+
+<form action="" method="post">
+  {{ form.hidden_tag() }}
+  {{ form.temperature }}
+  {{ form.submit() }}
+</form>
+
+</body>
+</html>
