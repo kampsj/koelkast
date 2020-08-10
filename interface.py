@@ -1,13 +1,12 @@
 
 
 def read_interface(filename):
-    content = ""
+
     with open(filename, 'r') as f:
         content = f.read()
 
     try:
-        setting = float(content)
-        return setting
+        return float(content)
     except ValueError:
         return "Error"
 
