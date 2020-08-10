@@ -2,13 +2,16 @@ import os
 from multiprocessing import Process
 from flask import Flask, render_template, redirect
 
-from control import control_temp
+from control import control_loop
 from sensors import read_sensors
+from switch import Switch
 from interface import read_interface, write_interface
-from settings import INTERFACE_TEMP, INTERFACE_ACTIVE
+from settings import INTERFACE_TEMP, INTERFACE_ACTIVE, COOL_PIN
+
 
 # Start temperature control loop.
-control_process = Process(target=control_temp)
+switch = Switch(COOL_PIN)
+control_process = Process(target=control_loop(), args=switch)
 control_process.start()
 
 

@@ -3,18 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>Koelkast</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
 </head>
 <body>
-Status: Actief
+<div class="container">
+    <div class="row">
+        <div class="col text-center"><br>
+            <h1>KOELKAST</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-center">
+            <span>Status:
+            <input type="button" {% if active == 0 %} onclick="window.location.href='/start';" class="btn btn-success" value="Aan"/>{% else %} onclick="window.location.href='/stop';" class="btn btn-danger" value="Uit"/>{% endif %}
+            </span>
+            <br><br>
+            Huidige temperatuur: {{ current_temp }} °C
+            <br><br>
+            <form action="" method="post">
+              {{ form.hidden_tag() }}
+              Doel: {{ form.temperature(size='3') }}
+              {{ form.submit() }}
+            </form>
+        </div>
+    </div>
 
-<input type="button" {% if active == 0 %} onclick="window.location.href='/start';" class="btn btn-success" value="Start"/>{% else %} onclick="window.location.href='/stop';" class="btn btn-danger" value="Stop"/>{% endif %}
-Temperatuur: {{ current_temp }} Graden
+</div>
 
-<form action="" method="post">
-  {{ form.hidden_tag() }}
-  {{ form.temperature }}
-  {{ form.submit() }}
-</form>
-AQ
 </body>
 </html>
