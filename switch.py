@@ -15,7 +15,6 @@ class Switch:
         :param pin: Connected GPIO pin, according to GPIO.board
         """
         self.cool_pin = cool_pin
-
         # Set board mode (for pin numbering)
         GPIO.setmode(GPIO.BOARD)
         # setup=0 (0 is output) initial=0; sets pin to low.
@@ -31,12 +30,12 @@ class Switch:
         """
         Sets the GPIO output of the cool pin to LOW
         """
-        GPIO.output(self.cool_pin, 0)
+        return GPIO.output(self.cool_pin, 0)
 
     def on(self):
         """
         Sets the GPIO output of the cool pin to HIGH
         """
-        GPIO.output(self.cool_pin, 1)
+        return GPIO.output(self.cool_pin, 1)
 
 

@@ -8,10 +8,12 @@ def read_interface(filename):
     try:
         return float(content)
     except ValueError:
-        return "Error"
+        return 0.0
 
 
 def write_interface(filename, value):
+    print(filename, value)
     with open(filename, 'w') as f:
+
         f.write(str(value))
 

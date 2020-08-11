@@ -19,9 +19,8 @@ def read_sensors():
             temperature = float(temp_line) / 1000
             values.append(temperature)
         except:
-            print(f'Error in sensor: {sensor}')
-    # TODO DELETE LINE BELOW WHEN DEPLOYING
-    values = [15.23, 13.55, 16.87]
+            print('Error in sensor: {}'.format(sensor))
+
     average = round(sum(values) / len(values), 2)
     values.append(average)
 

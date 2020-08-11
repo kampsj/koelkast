@@ -4,6 +4,24 @@
     <meta charset="UTF-8">
     <title>Koelkast</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+    <style>
+    .custom_button {
+      border: none;
+      padding: 100px 100px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 64px;
+      margin: 4px 2px;
+      cursor: pointer;
+    }
+    .update_btn {
+      width: 7em;
+    }
+    .temp_input {
+      height: 1em;
+    }
+</style>
 </head>
 <body>
 <div class="container">
@@ -14,16 +32,17 @@
     </div>
     <div class="row">
         <div class="col text-center">
-            <span>Status:
-            <input type="button" {% if active == 0 %} onclick="window.location.href='/start';" class="btn btn-success" value="Aan"/>{% else %} onclick="window.location.href='/stop';" class="btn btn-danger" value="Uit"/>{% endif %}
+            <span>
+            <input type="button" {% if active == 0 %} onclick="window.location.href='/start';" class="custom_button btn-success custom_button" value="Aan"/>{% else %} onclick="window.location.href='/stop';" class="custom_button btn btn-danger" value="Uit"/>{% endif %}
             </span>
             <br><br>
-            Huidige temperatuur: {{ current_temp }} °C
+            Nu: {{ current_temp }}°C
             <br><br>
             <form action="" method="post">
               {{ form.hidden_tag() }}
-              Doel: {{ form.temperature(size='3') }}
+              Doel:{{ form.temperature(size="2", required="required") }}°C<br>
               {{ form.submit() }}
+              <input type="submit" size="5" value="Update"{% if active == 0 %} class="btn btn-outline-success update_btn">{% else %} class="btn btn-outline-danger update_btn">{% endif %}
             </form>
         </div>
     </div>

@@ -11,15 +11,26 @@ def control_loop(switch):
     """
     while True:
         # Cooling should be activated
-        if INTERFACE_ACTIVE == 1.0:
+        active = read_interface(INTERFACE_ACTIVE)
+        if active == 1.0:
             # Check the goal temperature
             goal_temp = read_interface(INTERFACE_TEMP)
-            # First get temperature sensors.
-            current_temp = read_sensors()[-1]
+            # First get temperature from the sensors.
+            average_temp = read_sensors()[-1]
 
-            if current_temp - goal_temp + CONTROL_ACCURACY > 0:
-                switch.on()
+            control_temp = average_temp - goal_temp - CONTROL_ACCURACY
+            if switch.status():
+                # If cooling is active, cool down to -2 * control accuracy.
+                # This prevents the cooler from being switched on/off constantly.
+                if control_temp < -2 * CONTROL_ACCURACY:
+                    switch.off()
             else:
-                switch.off()
+                # When cooling is not active, and temperature is above goal + accuracy, activate cooling.
+                if control_temp > 0:
+                    switch.on()
+        elif active == 0.0:
+            switch.off()
+        else:
+            pass
 
         time.sleep(CONTROL_INTERVAL)
