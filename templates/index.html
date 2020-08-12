@@ -41,7 +41,6 @@
             <form action="" method="post">
               {{ form.hidden_tag() }}
               Doel:{{ form.temperature(size="2", required="required") }}°C<br>
-              {{ form.submit() }}
               <input type="submit" size="5" value="Update"{% if active == 0 %} class="btn btn-outline-success update_btn">{% else %} class="btn btn-outline-danger update_btn">{% endif %}
             </form>
         </div>

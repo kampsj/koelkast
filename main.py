@@ -15,37 +15,39 @@ def create_app(test_config=None):
         SECRET_KEY='dev',
     )
 
-    # TODO initialise ACTIVE to 0
-
     # a simple page that says hello
     @app.route('/', methods=('GET', 'POST'))
     def index():
+        """
+        Main page with option to turn cooling on/off and change the goal temp.
+        """
         from forms.temperature_form import TemperatureForm
         form = TemperatureForm()
         # This slows the page down significantly.
         # Acceptable since the page is hardly used.
         current_temp = read_sensors()[-1]  # Final entry is average.
         active = read_interface(INTERFACE_ACTIVE)
-        # Provide current goal temp.
 
         if form.validate_on_submit():
-            print("WRITING DATA")
-            print("form data: " + str(form.temperature.data))
-
             write_interface(INTERFACE_TEMP, form.temperature.data)
-        else:
-            print(form.errors.items())
 
+        # Provide current goal temp.
         form.temperature.data = read_interface(INTERFACE_TEMP)
         return render_template('index.html', form=form, current_temp=current_temp, active=active)
 
     @app.route('/start/', methods=('GET', 'POST'))
     def start():
+        """
+        Route to activate the control loop
+        """
         write_interface(INTERFACE_ACTIVE, 1)
         return redirect('/')
 
     @app.route('/stop/', methods=('GET', 'POST'))
     def stop():
+        """
+        Route to deactivate the control loop
+        """
         write_interface(INTERFACE_ACTIVE, 0)
         return redirect('/')
 

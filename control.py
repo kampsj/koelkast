@@ -8,6 +8,7 @@ from settings import INTERFACE_TEMP, INTERFACE_ACTIVE, CONTROL_INTERVAL, CONTROL
 def control_loop(switch):
     """
     Infinite loop. When the refrigerator temperature is too high, cooling is activated.
+    Requires a switch to turn cooling on/off.
     """
     while True:
         # Cooling should be activated
