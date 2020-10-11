@@ -1,5 +1,5 @@
 import time
-from sensors import read_sensors
+from sensors import get_sensor_synchronous
 from interface import read_interface
 
 from settings import INTERFACE_TEMP, INTERFACE_ACTIVE, CONTROL_INTERVAL, CONTROL_ACCURACY
@@ -17,8 +17,8 @@ def control_loop(switch):
             # Check the goal temperature
             goal_temp = read_interface(INTERFACE_TEMP)
             # First get temperature from the sensors.
-            average_temp = read_sensors()[-1]
-
+            average_temp = get_sensor_synchronous()[-1]
+        
             control_temp = average_temp - goal_temp - CONTROL_ACCURACY
             if switch.status():
                 # If cooling is active, cool down to -2 * control accuracy.

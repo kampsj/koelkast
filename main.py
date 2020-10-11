@@ -7,6 +7,15 @@ from switch import Switch
 from interface import read_interface, write_interface
 from settings import INTERFACE_TEMP, INTERFACE_ACTIVE, COOL_PIN
 
+import asyncio
+from functools import wraps
+import datetime as dt
+
+def async_action(f):
+    @wraps(f)
+    def wrapped(*args, **kwargs):
+        return asyncio.run(f(*args, **kwargs))
+    return wrapped
 
 def create_app(test_config=None):
     # create and configure the app
@@ -17,15 +26,19 @@ def create_app(test_config=None):
 
     # a simple page that says hello
     @app.route('/', methods=('GET', 'POST'))
-    def index():
+    @async_action
+    async def index():
         """
         Main page with option to turn cooling on/off and change the goal temp.
         """
         from forms.temperature_form import TemperatureForm
+
         form = TemperatureForm()
+
         # This slows the page down significantly.
         # Acceptable since the page is hardly used.
-        current_temp = read_sensors()[-1]  # Final entry is average.
+        current_temp = await read_sensors() # Final entry is average.
+
         active = read_interface(INTERFACE_ACTIVE)
 
         if form.validate_on_submit():
@@ -33,7 +46,7 @@ def create_app(test_config=None):
 
         # Provide current goal temp.
         form.temperature.data = read_interface(INTERFACE_TEMP)
-        return render_template('index.html', form=form, current_temp=current_temp, active=active)
+        return render_template('index.html', form=form, current_temp=current_temp[-1], active=active)
 
     @app.route('/start/', methods=('GET', 'POST'))
     def start():
