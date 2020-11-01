@@ -15,7 +15,10 @@ async def read_sensors():
     results = await asyncio.gather(t)
     values = [x for x in results if x]
 
-    average = round(sum(values) / len(values), 2)
+    try:
+        average = round(sum(values) / len(values), 2)
+    except ZeroDivisionError:
+        average = "SENSOR ERROR"
     values.append(average)
 
     return values
